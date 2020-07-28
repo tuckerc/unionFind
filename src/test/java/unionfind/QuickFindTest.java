@@ -10,7 +10,7 @@ public class QuickFindTest {
   QuickFind qf;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     qf = new QuickFind(10);
     qf.union(1, 2);
     qf.union(3, 4);
@@ -23,7 +23,7 @@ public class QuickFindTest {
 
   @Test
   public void unionTest() {
-    assertArrayEquals(new int[]{0, 1, 1, 3, 3, 0, 0, 3, 3, 0}, qf.getNodes());
+    assertArrayEquals(new int[] {0, 1, 1, 3, 3, 0, 0, 3, 3, 0}, qf.getNodes());
   }
 
   @Test
