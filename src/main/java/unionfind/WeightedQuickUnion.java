@@ -4,14 +4,20 @@ public class WeightedQuickUnion {
   // instance vars
   int[] nodes;
   int[] sizes;
+  int[] maxConnections;
+  int[] minConnections;
 
   // constructors
   public WeightedQuickUnion(int size) {
     nodes = new int[size];
     sizes = new int[size];
+    maxConnections = new int[size];
+    minConnections = new int[size];
     for (int i = 0; i < nodes.length; i++) {
       nodes[i] = i;
       sizes[i] = 1;
+      maxConnections[i] = i;
+      minConnections[i] = i;
     }
   }
 
@@ -25,17 +31,34 @@ public class WeightedQuickUnion {
     int firstRoot = root(firstNode);
     int secondRoot = root(secondNode);
     if(sizes[firstRoot] < sizes[secondRoot]) {
-      nodes[firstRoot] = secondRoot;
-      sizes[secondRoot] += sizes[firstRoot];
+      updateRootData(firstRoot, secondRoot);
     }
     else {
-      nodes[secondRoot] = firstRoot;
-      sizes[firstRoot] += sizes[secondRoot];
+      updateRootData(secondRoot, firstRoot);
     }
   }
 
-  public boolean find(int firstNode, int secondNode) {
+  private void updateRootData(int rootA, int rootB) {
+    nodes[rootA] = rootB;
+    sizes[rootB] += sizes[rootA];
+    if(maxConnections[rootA] > maxConnections[rootB]) {
+      maxConnections[rootB] = maxConnections[rootA];
+    }
+    if(minConnections[rootA] < minConnections[rootB]) {
+      minConnections[rootB] = minConnections[rootA];
+    }
+  }
+
+  public boolean connected(int firstNode, int secondNode) {
     return root(firstNode) == root(secondNode);
+  }
+
+  public int findMax(int i) {
+    return maxConnections[root(i)];
+  }
+
+  public int findMin(int i) {
+    return minConnections[root(i)];
   }
 
   // private helpers
